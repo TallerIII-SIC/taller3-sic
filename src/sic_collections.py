@@ -12,7 +12,7 @@ class CircularList:
     def __getitem__(self, index):
         """Returns the element in the required index. If the index is
         greater or equal than the list size, it has a circular behavior."""
-        if index < len(self.data):
+        if index < len(self._data):
             return self._data[index % self.size]
         else:
             return None
