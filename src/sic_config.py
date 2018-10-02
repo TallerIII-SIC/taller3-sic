@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import os
 import numpy as np
 
@@ -7,7 +7,7 @@ class Configuration:
     def __init__(self, config_file_name, base_dir=os.getcwd()):
         self.base_dir = base_dir
 
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(self._concat_base(config_file_name))
 
         self.t1_pps_file = self._concat_base(config.get("calcula_error_cfg", "t1_pps"))
