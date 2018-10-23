@@ -5,18 +5,7 @@ import numpy as np
 import scipy.stats
 import matplotlib.pyplot as plt
 import time
-
-
-def read_times(filename):
-
-    lines = np.loadtxt(filename, dtype=int, delimiter='|')
-
-    t1 = lines[:, 0]
-    t2 = lines[:, 1]
-    t3 = lines[:, 2]
-    t4 = lines[:, 3]
-
-    return t1, t2, t3, t4
+import read_times
 
 def phi_estimation(t1, t2, t3, t4):
     return (t1 - t2 - t3 + t4) / 2
