@@ -6,41 +6,10 @@ import scipy.stats
 import matplotlib.pyplot as plt
 import time
 import read_times
-
+from median_calculator import median_window
 
 def phi_estimation(t1, t2, t3, t4):
     return (t1 - t2 - t3 + t4) / 2
-
-
-def median_window(phi, w_length):
-    new_phi = np.zeros(len(phi))
-    for w_start in range(len(phi) - w_length):
-        new_phi[w_start] = np.median(phi[w_start:w_start + w_length])
-    return new_phi
-
-# OTRA VERSION DE LO DE ARRIBA, HAY QUE VER SI FUNCIONA BIEN Y SI REALMENTE ES MÁS RÁPIDA
-# def median_window2(phi, w_length):
-#     new_phi = np.zeros(len(phi))
-#     window = phi[:w_length]
-#     sorted_window = np.sort(window)
-#     for i in range(len(phi) - w_length):
-#         if i != 0:
-#             k = 0
-#             new_window = np.zeros(w_length)
-#             for j in range(1, w_length):
-#                 if phi[i] > sorted_window[j]:
-#                     new_window[k] = sorted_window[j]
-#                     k += 1
-#                 else:
-#                     new_window[k] = phi[i]
-#                     new_window[k + 1:] = sorted_window[j:]
-#                     break
-#             sorted_window = new_window
-#         # w_legth is even
-#         median = 0.5 * (sorted_window[w_length //
-#                                       2 - 1] + sorted_window[w_length // 2])
-#         new_phi[i] = median
-#     return new_phi
 
 
 def linear_reg_single(t, phi):
