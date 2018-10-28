@@ -124,4 +124,5 @@ if __name__ == '__main__':
         phi_arma[i * 60:(i + 1) * 60] = t[i * 60:(i + 1) * 60] * f[i] + k[i]
     timer.end("Finished Phi ARMA ({:.3f}s)")
 
-    np.savetxt(O_FILE, phi_arma)
+#    np.savetxt(O_FILE, phi_arma)
+    phi_arma.tofile(O_FILE)
