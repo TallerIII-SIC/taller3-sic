@@ -3,6 +3,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-phi_arma = np.loadtxt("phi_arma")
-plt.plot(range(len(phi_arma)), phi_arma)
+phi_sic = np.loadtxt("phi_sic")
+plt.plot(range(len(phi_arma)), phi_sic)
 plt.show()

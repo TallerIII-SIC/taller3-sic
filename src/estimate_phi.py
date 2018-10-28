@@ -57,7 +57,15 @@ if __name__ == '__main__':
     timer = Timer()
 
     timer.start()
-    t1, t2, t3, t4 = read_times(T_FILE)
+
+    t = np.fromfile(T_FILE)
+    t = t.reshape(-1,4)
+    t1 = t[:,0]
+    t2 = t[:,1]
+    t3 = t[:,2]
+    t4 = t[:,3]
+
+#    t1, t2, t3, t4 = read_times(T_FILE)
     timer.end("Finished reading data ({:.3f}s)")
 
     timer.start()
@@ -85,4 +93,5 @@ if __name__ == '__main__':
         phi_arma[i * 60:(i + 1) * 60] = t[i * 60:(i + 1) * 60] * f[i] + k[i]
     timer.end("Finished Phi ARMA ({:.3f}s)")
 
-    np.savetxt(O_FILE, phi_arma)
+#    np.savetxt(O_FILE, phi_arma)
+    phi_arma.tofile(O_FILE)
