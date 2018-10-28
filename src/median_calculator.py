@@ -5,7 +5,7 @@ from sortedcontainers import SortedList
 def median_window(phi, w_length):
     """Smooths a function 'phi' replacing each point with the median of the next 'w_length' points"""
     output = []
-    
+
     queue = deque(phi[0:w_length], w_length)
     sorted_list = SortedList(phi[0:w_length])
 

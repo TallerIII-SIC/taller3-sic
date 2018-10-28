@@ -60,6 +60,8 @@ if __name__ == '__main__':
 
     t = np.fromfile(T_FILE)
     t = t.reshape(-1,4)
+
+    
     t1 = t[:,0]
     t2 = t[:,1]
     t3 = t[:,2]
@@ -72,16 +74,26 @@ if __name__ == '__main__':
     phi_est = phi_estimation(t1, t2, t3, t4)
     timer.end("Finished Phi estimation ({:.3f}s)")
 
-    t = range(len(phi_est))
+
+    print(len(t1))
+    print(len(t))
 
     timer.start()
     phi_med_600 = median_window(phi_est, 600)
     timer.end("Finished Phi median 600 ({:.3f}s)")
+    # Corto para que sea justo múltiplo de 60 y despueés sea más fácil y entren ventanas completas
+
+    phi_med_600 = phi_med_600[:len(phi_med_600)//60*60]
+    t = range(len(phi_med_600))
 
     timer.start()
     f, k = linear_reg(t, phi_med_600, 60)
     phi_lin = np.zeros(len(t))
+
     for i in range(len(t) // 60):
+        print(i*60)
+        print((i+1)*60)
+        print(len(phi_lin))
         phi_lin[i * 60:(i + 1) * 60] = t[i * 60:(i + 1) * 60] * f[i] + k[i]
     timer.end("Finished Phi lin reg 60 ({:.3f}s)")
 
