@@ -30,47 +30,48 @@ t1_pps_aligned = np.zeros(len(t))
 t2_pps_aligned = np.zeros(len(t))
 
 j = 0
+
+t_aligned = np.zeros((len(t), 4))
+
 k = 0
 
 for i in range(len(t)):
-    if t[i, 0] - t1_pps[j] > 0.5:
+    while t[i, 0] - t1_pps[j] > 0.5:
+        # Si el t1 esta "adelantado", avanzo en los pps 
         j += 1
-    if t[i, 1] - t2_pps[k] > 0.5:
+    if t[i, 0] > t1_pps[j]:
+        t1_pps_aligned[k] = t1_pps[j]
+        t_aligned[k] = t[i, :]
         k += 1
-    t1_pps_aligned[i] = t1_pps[j]
-    t2_pps_aligned[i] = t2_pps[k]
+    # else skip
 
-# print(t1_pps_aligned)
-# print(t2_pps_aligned)
-# print(t)
+t = t_aligned[:k]
 
+print("1 MAX DIFFERENCE T1 :", np.max(np.abs(t[:,0] - t1_pps_aligned)))
 
-# print(len(t1_pps_aligned))
-# print(len(t2_pps_aligned))
-# print(len(t))
+k = 0
+j = 0
 
-# print(t1_pps_aligned[0], t1_pps_aligned[-1])
-# print(t2_pps_aligned[0], t2_pps_aligned[-1])
-# print(t[0], t[-1])
+t_aligned = np.zeros((len(t), 4))
+t1_pps_aligned_2 = np.zeros(len(t))
 
-# print("max diff:")
+for i in range(len(t)):
+    while t[i, 1] - t2_pps[j] > 0.5:
+        j += 1
+    if t[i, 1] > t2_pps[j]:
+        t2_pps_aligned[k] = t2_pps[j]
+        t_aligned[k] = t[i, :]
+        t1_pps_aligned_2[k] = t1_pps_aligned[i]
+        k += 1
+    # else skip
 
-# print(np.max(t[:, 0] - t1_pps_aligned))
-# print(np.max(t[:, 1] - t2_pps_aligned))
+t_aligned = t_aligned[:k]
+t1_pps_aligned_2 = t1_pps_aligned_2[:k]
+t2_pps_aligned = t2_pps_aligned[:k]
 
-# print("THIS;")
+print("2 MAX DIFFERENCE T1 :", np.max(np.abs(t_aligned[:,0] - t1_pps_aligned_2)))
+print("2 MAX DIFFERENCE T2:", np.max(np.abs(t_aligned[:,1] - t2_pps_aligned)))
 
-
-# print("max diff:")
-# print(np.min(t[:, 0] - t1_pps_aligned))
-# print(np.min(t[:, 1] - t2_pps_aligned))
-# p = np.argmin(t[:, 1] - t2_pps_aligned)
-
-# print("THIS;")
-
-# print(t[p-1:p+2])
-# print(t1_pps_aligned[p-1:p+2])
-# print(t2_pps_aligned[p-1:p+2])
-
-t1_pps_aligned.tofile(sys.argv[4])
+t1_pps_aligned_2.tofile(sys.argv[4])
 t2_pps_aligned.tofile(sys.argv[5])
+t_aligned.tofile(sys.argv[6])

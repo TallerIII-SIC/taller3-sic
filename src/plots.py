@@ -11,6 +11,8 @@ print(len(sic_phi))
 
 plt.plot(real_phi)
 plt.plot(sic_phi)
-plt.legend(('real phi','sic phi'))
+plt.legend(('real phi', 'sic phi'))
+plt.xlabel('t [s]')
+plt.xlabel('Phi [s]')
 
 plt.show()
