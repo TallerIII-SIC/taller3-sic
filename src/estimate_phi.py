@@ -9,7 +9,7 @@ import read_times
 from median_calculator import median_window
 
 def phi_estimation(t1, t2, t3, t4):
-    return (t1 - t2 - t3 + t4) / 2
+    return ((t4-t1)-(t3-t2)) / 2
 
 
 def linear_reg_single(t, phi):

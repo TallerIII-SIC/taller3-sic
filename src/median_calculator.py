@@ -9,9 +9,9 @@ def median_window(phi, w_length):
     queue = deque(phi[0:w_length], w_length)
     sorted_list = SortedList(phi[0:w_length])
 
+    left_idx = (w_length - 1) // 2
+    right_idx = w_length // 2
     for phi_idx in range(w_length, len(phi)):
-        left_idx = (w_length - 1) // 2
-        right_idx = w_length // 2
         current_median = (sorted_list[left_idx] + sorted_list[right_idx]) / 2
         output.append(current_median)
 
