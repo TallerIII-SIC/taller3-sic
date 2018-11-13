@@ -12,7 +12,7 @@ if len(sys.argv) != 3:
 # binary
 t_pps = np.fromfile(sys.argv[1])
 
-t_pps_final = np.zeros(int(np.round(t_pps[-1] - t_pps[0] + 2)))
+t_pps_final = np.zeros(int(np.round((t_pps[-1] - t_pps[0]))/1e6 + 2))
 
 j = 0
 prev = float('inf')
