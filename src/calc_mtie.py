@@ -5,42 +5,24 @@ import matplotlib.pyplot as plt
 
 
 def mtie_calc(te, tau):
-    # plt.subplot(4, 1, 1)
-    # plt.plot(te)
-    # plt.title('TE')
-    # plt.xlabel("t [s]")
-    # plt.ylabel("TE [s]")
-    # plt.subplot(4, 1, 2)
     tie = te[tau:] - te[:-tau]
-    # print(np.mean(tie))
-    # print(np.max(tie))
-    # print(np.min(tie))
-    # print(tie)
-    # plt.plot(tie)
-    # plt.title('TIE')
-    # plt.xlabel("t [s]")
-    # plt.ylabel("TIE [s]")
-    # plt.subplot(4, 1, 3)
     mtie = np.zeros(len(te)-tau)
     for t_0 in range(len(te)-tau):
         maximum = max(te[t_0:t_0+tau])
         minimum = min(te[t_0:t_0+tau])
         mtie[t_0] = maximum - minimum
-    mtie = mtie  # Paso a microsegundos
-    # plt.plot(mtie)
-    # plt.title("MTIE")
-    # plt.xlabel("t [s]")
-    # plt.ylabel("MTIE [us]")
-    # plt.subplot(4, 1, 4)
-    # plt.hist(mtie, bins=5000, density=True, cumulative=True, histtype='step')
-    # print("PERCENTIL 90: ", np.percentile(mtie, 90))
-    # plt.title("MTIE histogram")
-    # plt.xlabel('MTIE [us]')
-    # plt.ylabel('Frec')
-    # plt.xlim([0, 100])
-    # plt.yticks([0.1*i for i in range(11)])
     return tie, mtie
 
+def mtie_calc_2(te,tau):
+    # otro metodo con las ventanas fijas
+    tie = te[tau:] - te[:-tau]
+    mtie = np.zeros(len(te)//tau)
+    for i in range(len(mtie)):
+        t_0 = i*tau
+        maximum = max(te[t_0:t_0+tau])
+        minimum = min(te[t_0:t_0+tau])
+        mtie[i] = maximum - minimum
+    return tie, mtie
 
 if __name__ == '__main__':
 
@@ -59,18 +41,13 @@ if __name__ == '__main__':
 
     te = sic_phi - real_phi
 
-    # print("MIN TE: ", np.min(te))
-    # print("MAX TE: ", np.max(te))
-    # print("AVG TE: ", np.mean(te))
-
     t_pps = t_pps / 1e6
+
+    
+    # >>>>> ESTO DE ACÁ ABAJO SE PODRÍA SACAR, NO CAMBIA NADA, PORQUE YA HABIA INTERPOLADO ANTES
 
     t_pps_final = np.zeros(int(np.round(t_pps[-1] - t_pps[0] + 2)))
     te_final = np.zeros(int(np.round(t_pps[-1] - t_pps[0] + 2)))
-
-    # print(len(t_pps))
-    # print(len(te))
-    # print(len(t_pps))
 
     j = 0
     prev = float('inf')
@@ -84,6 +61,7 @@ if __name__ == '__main__':
             te_final[j:j+num_missing_seconds +
                      1] = np.linspace(te[i-1], te[i], num_missing_seconds + 2)[1:]
             j += num_missing_seconds + 1
+            print("SKIPPED SECONDS")
         else:
             t_pps_final[j] = t
             te_final[j] = te[i]
@@ -92,6 +70,9 @@ if __name__ == '__main__':
 
     t_pps_final = t_pps_final[:j]
     te_final = te_final[:j]
+
+    # <<<<< HASTA ACÁ
+
     MTIE_WINDOW = 60
     tie, mtie = mtie_calc(te_final, MTIE_WINDOW)
     plt.show()

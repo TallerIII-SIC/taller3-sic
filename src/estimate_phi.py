@@ -33,37 +33,7 @@ def arma_filter(f, k, alpha):
     k[1:] = alpha * k[:-1] + (1 - alpha) * k[1:]
     return f, k
 
-
-if __name__ == '__main__':
-
-    if len(sys.argv) != 4:
-        print("Usage: estimate_phi <times file> <output file> <time 1 output>")
-        sys.exit(0)
-
-    T_FILE = sys.argv[1]
-    O_FILE = sys.argv[2]
-    T1_OUT_FILE = sys.argv[3]
-    timer = Timer()
-
-    timer.start()
-
-#    t = np.fromfile(T_FILE)
-#    t = t.reshape(-1, 4)
-
-#    t1 = t[:, 0]
-#    t2 = t[:, 1]
-#    t3 = t[:, 2]
-#    t4 = t[:, 3]
-
-    t1, t2, t3, t4 = read_times(T_FILE)
-    timer.end("Finished reading data ({:.3f}s)")
-
-    timer.start()
-    phi_est = phi_estimation(t1, t2, t3, t4)
-    timer.end("Finished Phi estimation ({:.3f}s)")
-
-    # interpolar los datos que faltan
-
+def interpolate_missing_values(t1,phi_est):
     t1_ok = np.zeros(int(np.round(t1[-1]/1e6 - t1[0]/1e6 + 2)))
     phi_est_ok = np.zeros(int(np.round(t1[-1]/1e6 - t1[0]/1e6 + 2)))
 
@@ -82,26 +52,39 @@ if __name__ == '__main__':
             t1_ok[j] = t1[i]
             phi_est_ok[j] = phi_est[i]
             j += 1
-    maxdiff = np.max(np.diff(t1))
-    print("MAX DIFF old:", maxdiff)
-    maxdiff = np.max(np.diff(t1_ok))
-    print("MAX DIFF NEW:", maxdiff)
 
-    phi_est = phi_est_ok[:j]
-    t1 = t1_ok[:j]
+    return t1_ok[:j], phi_est_ok[:j]
 
-    print("PHI ESTIMATION:", phi_est, len(phi_est))
 
-    print(len(t1))
+if __name__ == '__main__':
+
+    if len(sys.argv) != 4:
+        print("Usage: estimate_phi <times file> <output file> <time 1 output>")
+        sys.exit(0)
+
+    T_FILE = sys.argv[1]
+    O_FILE = sys.argv[2]
+    T1_OUT_FILE = sys.argv[3]
+    timer = Timer()
+
+    timer.start()
+
+    t1, t2, t3, t4 = read_times(T_FILE)
+    timer.end("Finished reading data ({:.3f}s)")
+
+    timer.start()
+    phi_est = phi_estimation(t1, t2, t3, t4)
+    timer.end("Finished Phi estimation ({:.3f}s)")
+
+    # interpolar los datos que faltan
+
+    t1, phi_est = interpolate_missing_values(t1, phi_est)
 
     timer.start()
     phi_med_600 = median_window(phi_est, 600)
     phi_med_600 = np.array(phi_med_600)
     timer.end("Finished Phi median 600 ({:.3f}s)")
     # Corto para que sea justo múltiplo de 60 y despueés sea más fácil y entren ventanas completas
-
-    print("PHI MED: ", phi_med_600)
-    print("len: ", len(phi_med_600))
 
     phi_med_600 = phi_med_600[:len(phi_med_600)//60*60]
     t1 = t1[:len(phi_med_600)]
@@ -116,12 +99,11 @@ if __name__ == '__main__':
     timer.end("Finished Phi lin reg 60 ({:.3f}s)")
 
     timer.start()
-    alpha = 0.15  # EN EL ORIGINAL ESTA AL REVES!!!
+    alpha = 0.15
     f, k = arma_filter(f, k, alpha)
     phi_arma = np.zeros(len(t1))
     for i in range(len(t1) // 60):
         phi_arma[i * 60:(i + 1) * 60] = t1[i * 60:(i + 1) * 60] * f[i] + k[i]
     timer.end("Finished Phi ARMA ({:.3f}s)")
 
-#    np.savetxt(O_FILE, phi_arma)
     phi_arma.tofile(O_FILE)
