@@ -16,6 +16,9 @@ def align_pps(t1, t2):
 
     # Suponemos que la diferencia inicial es de menos de 0.5 segundos
 
+    initial_i = 0
+    initial_j = 0
+    
     while i < len(t1) and j < len(t2):
         if t1[i] - t2[j] > 0.5e6:
             j += 1
