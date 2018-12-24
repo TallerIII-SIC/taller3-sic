@@ -61,3 +61,5 @@ If the browser does not open automatically, you will see several log messages in
 
 ## Useful links
 [Great explanation about MTIE and TDEV meanings](http://users.rcn.com/wpacino/jitwtutr/jitwtutr.htm).
+[David W. Allan Website](http://www.allanstime.com/).
+[SIC Protocol Implementation on Github](https://github.com/CoNexDat/SIC).
