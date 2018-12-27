@@ -58,3 +58,11 @@ ipython notebook mtie.ipynb
 
 It will serve the notebook and open your default browser.
 If the browser does not open automatically, you will see several log messages in the console. One of them contains a link that you can open using the browser you want.
+
+## Useful links
+[Great explanation about MTIE and TDEV meanings](http://users.rcn.com/wpacino/jitwtutr/jitwtutr.htm).
+
+[David W. Allan Website](http://www.allanstime.com/).
+
+[SIC Protocol Implementation on Github](https://github.com/CoNexDat/SIC).
+
