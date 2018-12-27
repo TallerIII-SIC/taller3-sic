@@ -1,4 +1,5 @@
 import allantools
+import matplotlib.pyplot as plt
 
 
 def plotTDEV(TE):
