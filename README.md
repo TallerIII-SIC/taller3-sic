@@ -1,6 +1,19 @@
 # SIC data analysis
 
-## Run the IPython Notebooks
+## IPython Notebooks order
+
+First, you need to set the current directory to src/:
+```
+cd src
+```
+
+In order to reproduce the analysis, you should run the IPython Notebooks in the following order:
+  1. sic.ipynb
+  2. real.ipynb
+  3. mtie.ipynb
+  4. allan.ipynb
+
+## How to Run the IPython Notebooks
 
 There is a requirements.txt file to run the IPython Notebooks from a virtual environment.
 
