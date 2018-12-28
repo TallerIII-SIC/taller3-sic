@@ -12,7 +12,7 @@ def plotTDEV(TE):
     plotter = allantools.Plot()
     plotter.plot(a, errorbars=True, grid=True)
 
-    plotter.ax.set_xlabel("Tau [s]")
+    plotter.ax.set_xlabel("$\\tau$ [s]")
     plotter.ax.set_ylabel("TDEV [s]")
     plt.title("Varianza de Allan para SIC")
     plotter.show()
