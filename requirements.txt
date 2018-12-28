@@ -35,6 +35,7 @@ pyzmq==17.1.2
 scipy==1.2.0
 Send2Trash==1.5.0
 six==1.12.0
+sortedcontainers==2.1.0
 terminado==0.8.1
 testpath==0.4.2
 tornado==5.1.1
